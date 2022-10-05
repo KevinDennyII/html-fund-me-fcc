@@ -1,5 +1,6 @@
 import { ethers } from "./ethers-5.6.esm.min.js"
 import { abi, contractAddress } from "./constants.js"
+// raw javascript uses import and not require
 
 const connectButton = document.getElementById("connectButton")
 const withdrawButton = document.getElementById("withdrawButton")
@@ -48,8 +49,11 @@ async function fund() {
   const ethAmount = document.getElementById("ethAmount").value
   console.log(`Funding with ${ethAmount}...`)
   if (typeof window.ethereum !== "undefined") {
+    // provider / connection to the blockchain
     const provider = new ethers.providers.Web3Provider(window.ethereum)
+    // signer / wallet / someone with some gas
     const signer = provider.getSigner()
+    // contract that we are interacting with ABI and Address
     const contract = new ethers.Contract(contractAddress, abi, signer)
     try {
       const transactionResponse = await contract.fund({
